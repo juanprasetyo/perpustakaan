@@ -135,68 +135,72 @@ $('body').on('click', '.btn-addBook', function () {
 let canvas = $('#booksLineChart');
 
 if (window.location.href.includes('perpustakaan/grafik')) {
-    console.log('jajan')
-    $.ajax({
-        method: 'GET',
-        dataType: 'json',
-        url: baseurl + 'dataGrafik',
-        success: function (resp) {
-            console.log(resp.dipinjam)
-            let chart = new Chart(canvas, {
-                type: 'line',
-                data: {
-                    labels: resp.judul,
-                    datasets: [{
-                        label: 'Buku Tersisa',
-                        backgroundColor: 'red',
-                        borderColor: 'red',
-                        data: resp.banyak,
-                        fill: false
-                    }, {
-                        label: 'Buku Dipinjam',
-                        backgroundColor: 'yellow',
-                        borderColor: 'yellow',
-                        data: resp.dipinjam,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    title: {
-                        display: true,
-                        text: 'Data Peminjaman',
-                    },
-                    tooltips: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    hover: {
-                        mode: 'nearest',
-                        intersect: true
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Judul Buku'
-                            }
-                        }],
-                        yAxes: [{
-                            display: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Banyak Buku'
-                            },
-                            ticks: {
-                                beginAtZero: true
-                            }
+    console.log('jajan');
+    function update() {
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: baseurl + 'dataGrafik',
+            success: function (resp) {
+                console.log(resp.dipinjam)
+                let chart = new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: resp.judul,
+                        datasets: [{
+                            label: 'Buku Tersisa',
+                            backgroundColor: 'red',
+                            borderColor: 'red',
+                            data: resp.banyak,
+                            fill: false
+                        }, {
+                            label: 'Buku Dipinjam',
+                            backgroundColor: 'yellow',
+                            borderColor: 'yellow',
+                            data: resp.dipinjam,
+                            fill: false
                         }]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Data Peminjaman',
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Judul Buku'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Banyak Buku'
+                                },
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
                     }
-                }
-            })
-        }
-    })
+                })
+            },
+        })
+        window.setTimeout(update, 10000);
+    }
+    update();
 }
 
 
